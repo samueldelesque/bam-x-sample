@@ -6,35 +6,32 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>My AngularJS App</title>
+	<title>Bam x Sample app</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="bower_components/html5-boilerplate/css/normalize.css">
 	<link rel="stylesheet" href="bower_components/html5-boilerplate/css/main.css">
 	<!-- Latest compiled and minified CSS -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
-
-	<!-- Optional theme -->
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
-
-	<!-- Latest compiled and minified JavaScript -->
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 	<link rel="stylesheet" href="app.css">
 	<script src="bower_components/html5-boilerplate/js/vendor/modernizr-2.6.2.min.js"></script>
 </head>
-<body>
-	<ul class="menu">
-		<li><a href="#/view1">view1</a></li>
-		<li><a href="#/view2">view2</a></li>
-	</ul>
+<body ng-controller="MainCtrl">
+	<nav>
+		<ul class="menu">
+			<li ng-repeat="(brand,data) in brands"><a href="#/report/{{brand}}">{{data.name}}</a></li>
+			<li><a href="#/report/combined"><i class="glyphicon glyphicon-screenshot"></i> All Combined</a></li>
+		</ul>
+	</nav>
 
 	<!--[if lt IE 7]>
 			<p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
 	<![endif]-->
 
-	<div ng-view></div>
-
-	<div>Angular seed app: v<span app-version></span></div>
+	<main>
+		<div ng-view></div>
+		<footer>Bam x Sample project v<span app-version></span></footer>
+	</main>
 
 	<!-- In production use:
 	<script src="//ajax.googleapis.com/ajax/libs/angularjs/x.x.x/angular.min.js"></script>
@@ -42,10 +39,11 @@
 	<script src="bower_components/angular/angular.js"></script>
 	<script src="bower_components/angular-route/angular-route.js"></script>
 	<script src="app.js"></script>
-	<script src="view1/view1.js"></script>
+	<script src="report/report.js"></script>
 	<script src="view2/view2.js"></script>
 	<script src="components/version/version.js"></script>
 	<script src="components/version/version-directive.js"></script>
 	<script src="components/version/interpolate-filter.js"></script>
+	<script src="libs/angular-datepicker.js"></script>
 </body>
 </html>
