@@ -10,5 +10,4 @@
 
 ***To launch app***
 
-- ```npm install```
 - ```npm start```
