@@ -96,11 +96,13 @@ footer{
   background: #032f1b;
 }
 .date-selection{
+  position: relative;
   text-align: center;
   padding: 20px;
   color: #bbb;
 }
 .date-selection span{
+  position: relative;
   color: #777;
   border-bottom: 1px dotted #bbb;
   padding: 0 4px 2px 2px;
@@ -108,6 +110,50 @@ footer{
 .date-selection span i{
   font-size: 10px;
   padding: 2px;
+}
+.date-selection button{
+  border:none;
+}
+.date-selection .start,.date-selection .end{
+  display: inline-block;
+  position: relative;
+}
+.date-selection .start{
+  margin-right:10px;
+}
+.date-selection .dropdown-menu{
+  margin-left:-40px;
+}
+.date-selection input{
+  border:none;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  opacity: 0;
+  color: transparent;
+  background: transparent;
+  position: absolute;
+  top:0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+.budget{
+  padding: 20px;
+  color: white
+}
+.budget input{
+  margin:5px 0;
+  background: transparent;
+  color: white;
+  outline: none;
+  border:none;
+  padding: 4px 0;
+  width: 100%;
+  border-bottom: 1px dotted white;
+}
+.budget .budget-value{
+  color: #077543;
 }
 @media screen and (max-width:768px){
   .markup-details > div{

@@ -13,6 +13,8 @@
 	<link rel="stylesheet" href="bower_components/html5-boilerplate/css/main.css">
 	<!-- Latest compiled and minified CSS -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+	<link rel="stylesheet" href="bower_components/jquery-ui/themes/base/all.css">
+	<link rel="stylesheet" href="bower_components/jquery-ui/themes/base/datepicker.css">
 	<link rel="stylesheet" href="app.css">
 	<script src="bower_components/html5-boilerplate/js/vendor/modernizr-2.6.2.min.js"></script>
 </head>
@@ -20,8 +22,26 @@
 	<nav>
 		<ul class="menu">
 			<li ng-repeat="(brand,data) in brands"><a href="#/report/{{brand}}">{{data.name}}</a></li>
+			<li><a href="#/report/stacked"><i class="glyphicon glyphicon-screenshot"></i> All Stacked</a></li>
 			<li><a href="#/report/combined"><i class="glyphicon glyphicon-screenshot"></i> All Combined</a></li>
 		</ul>
+		<div class="budget">
+			<div class="alert alert-danger" role="alert" ng-show="spendingAlert()">
+				<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+				Your spending is exceeding budget!
+			</div>
+			<div class="input-fields">
+				<label for="spendLimit">Your spend limit ($):</label>
+				<input ng-model="spend" id="spendLimit" type="text">
+			</div>
+			<div class="progress">
+			  <div class="progress-bar {{budgetProgressClass()}}" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: {{spendingPercentage()}}%;">
+			    <span class="sr-only">{{spendingPercentage()}} Complete</span>
+			  </div>
+			</div>
+			<div class="budget-value">{{spend | currency}} / {{budget | currency}}</div>
+		</div>
+
 	</nav>
 
 	<!--[if lt IE 7]>
@@ -33,17 +53,15 @@
 		<footer>Bam x Sample project v<span app-version></span></footer>
 	</main>
 
-	<!-- In production use:
-	<script src="//ajax.googleapis.com/ajax/libs/angularjs/x.x.x/angular.min.js"></script>
-	-->
 	<script src="bower_components/angular/angular.js"></script>
 	<script src="bower_components/angular-route/angular-route.js"></script>
+	<script src="bower_components/angular-bootstrap/ui-bootstrap.min.js"></script>
+	<script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
 	<script src="app.js"></script>
 	<script src="report/report.js"></script>
-	<script src="view2/view2.js"></script>
 	<script src="components/version/version.js"></script>
 	<script src="components/version/version-directive.js"></script>
 	<script src="components/version/interpolate-filter.js"></script>
-	<script src="libs/angular-datepicker.js"></script>
+	<script src="components/google-charts/ng-google-chart.js"></script>
 </body>
 </html>
