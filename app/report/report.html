@@ -1,17 +1,5 @@
 <h2>Report for <strong>{{brand}}</strong></h2>
-<div class="date-selection">
-	<div class="start">
-		<button type="button" class="btn btn-default" ng-click="startOpen($event)"><i class="glyphicon glyphicon-calendar"></i></button>
-		<input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="startDate" is-open="startOpened" min-date="minDate" max-date="'2015-06-22'" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" />
-		<label for="startDate" class="value">{{startDate | date : "MMMM d"}}</label>
-	</div> 
-	through 
-	<div class="end">
-		<button type="button" class="btn btn-default" ng-click="endOpen($event)"><i class="glyphicon glyphicon-calendar"></i></button>
-		<input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="endDate" is-open="endOpened" min-date="minDate" max-date="'2015-06-22'" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" />
-		<label for="endDate" class="value">{{endDate | date : "MMMM d"}}</label>
-	</div>
-</div>
+<h3>{{startDate | date : "MMMM d"}} through {{endDate | date : "MMMM d"}} ({{daydiff(startDate,endDate)}} days)</h3>
 <div class="brand-visibility">
 	<div class="cpi">{{cpi}}%</div>
 	<ul class="list-group">
@@ -30,7 +18,5 @@
   <div class="cpc"><label>Cost per click</label><div class="value">{{cpc | currency}}</div></div>
   <div class="markup"><label>Your markup</label><div class="value">{{markup | percentage}}</div></div>
 </div>
-
-
 
 <div google-chart chart="chart" style="{{chart.cssStyle}}"/>

@@ -12,22 +12,76 @@ config(['$routeProvider', function($routeProvider) {
   $routeProvider.otherwise({redirectTo: '/report'});
 }])
 .controller('MainCtrl', function($scope) {
+
 	function getRandomArbitrary(min, max) {
 		var r = Math.random() * (max - min) + min;
 		return Math.round(r);
 	}
-	angular.forEach(brands,function(e,i){
-		for(var y=0;y<14;y++){
-			brands[i].data.push({
-				clicks: getRandomArbitrary(e.fixtureMinClicks,e.fixtureMaxClicks),
-				impressions: getRandomArbitrary(e.fixtureMinImpressions,e.fixtureMaxImpressions)
-			})
-		}
-	})
+	$scope.generateData = function(brands){
+		angular.forEach(brands,function(brand,i){
+			for(var y=0;y<14;y++){
+				brands[i].data.push({
+					clicks: getRandomArbitrary(brand.fixtureMinClicks,brand.fixtureMaxClicks),
+					impressions: getRandomArbitrary(brand.fixtureMinImpressions,brand.fixtureMaxImpressions)
+				})
+			}
+		})
+		return brands
+	}
+	$scope.filterData = function(brands,startDate,endDate){
+		var newData = angular.copy(brands);
+		angular.forEach(newData,function(brand,i){
+			var copy_data = []
+			for(var y=0;y<14;y++){
+				var d = new Date()
+				var dayDate = new Date(d.setDate(d.getDate()-y))
+				if(startDate.getTime() < dayDate.getTime() && dayDate.getTime()-100 <= endDate.getTime()){
+					copy_data.push(brand.data[y])
+				}
+			}
+			newData[i].totals = $scope.sumData(brand)
+			newData[i].data = copy_data
+		})
+		return newData
+	}
 
-    $scope.brands = brands
-	$scope.budget = 50000
-	$scope.spend = 10000
+	$scope.sumData = function(brand){
+		var sums = {clicks:0,impressions:0}
+		angular.forEach(brand.data,function(e,i){
+			sums.clicks += e.clicks
+			sums.impressions += e.impressions
+		})
+		return sums
+	}
+	$scope.sumBrands = function(brands){
+		var sums = {clicks:0,impressions:0,days:[]}
+		angular.forEach(brands,function(brand,i){
+			var brandSum = $scope.sumData(brand)
+			sums.clicks += brandSum.clicks
+			sums.impressions += brandSum.impressions
+			angular.forEach(brand.data,function(dayData,day){
+				sums.days[day] = sums.days[day] || {clicks:0,impressions:0}
+				sums.days[day].clicks += dayData.clicks
+				sums.days[day].impressions += dayData.impressions
+			})
+		})
+		return sums
+	}
+	$scope.daydiff = function(first, second) {
+		return (second-first)/(1000*60*60*24);
+	}
+	$scope.startOpen = function($event) {
+		$event.preventDefault();
+		$event.stopPropagation();
+
+		$scope.startOpened = true;
+	};
+	$scope.endOpen = function($event) {
+		$event.preventDefault();
+		$event.stopPropagation();
+
+		$scope.endOpened = true;
+	};
 	$scope.spendingAlert = function(){ return $scope.spend > $scope.budget}
 	$scope.budgetProgressClass = function(){
 		if($scope.spend > $scope.budget) return "progress-bar-danger"
@@ -35,14 +89,36 @@ config(['$routeProvider', function($routeProvider) {
 		else return "progress-bar-success"
 	}
 	$scope.spendingPercentage = function(){ return $scope.spend / $scope.budget * 100}
+
+	var start = new Date()
+	$scope.startDate = new Date(start.setDate(start.getDate()-14))
+	$scope.endDate = new Date()
+	$scope.minDate = $scope.startDate
+	$scope.maxDate = $scope.endDate
+	$scope.allData = $scope.generateData(brandsFixtures)
+	$scope.brands = $scope.filterData($scope.allData,$scope.startDate,$scope.endDate)
+	$scope.budget = 50000
+	$scope.spend = 10000
+	$scope.totals = $scope.sumBrands($scope.brands)
+
+	$scope.$watch("startDate", function(date, oldValue) {
+		console.log("StartDate changed")
+		$scope.brands = $scope.filterData($scope.allData,$scope.startDate,$scope.endDate)
+		$scope.totals = $scope.sumBrands($scope.brands)
+	})
+	$scope.$watch("endDate", function(date, oldValue) {
+		console.log("EndDate changed")
+		$scope.brands = $scope.filterData($scope.allData,$scope.startDate,$scope.endDate)
+		$scope.totals = $scope.sumBrands($scope.brands)
+	})
 })
 .filter('percentage', ['$filter', function ($filter) {
   return function (input, decimals) {
-    return $filter('number')(input * 100, decimals) + '%';
+	return $filter('number')(input * 100, decimals) + '%';
   };
 }]);
 
-var brands = {
+var brandsFixtures = {
 	saks: {
 		name: "Saks Fith Avenue",
 		fixtureMaxClicks:5000,
@@ -61,3 +137,4 @@ var brands = {
 	}
 }
 
+var test = true;

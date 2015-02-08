@@ -20,6 +20,19 @@
 </head>
 <body ng-controller="MainCtrl">
 	<nav>
+		<div class="date-selection">
+			<div class="start">
+				<button type="button" class="btn btn-default" ng-click="startOpen($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+				<input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="startDate" is-open="startOpened" min-date="minDate" max-date="maxDate" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" />
+				<label for="startDate" class="value">{{startDate | date : "MMMM d"}}</label>
+			</div> 
+			through 
+			<div class="end">
+				<button type="button" class="btn btn-default" ng-click="endOpen($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+				<input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="endDate" is-open="endOpened" min-date="minDate" max-date="maxDate" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" />
+				<label for="endDate" class="value">{{endDate | date : "MMMM d"}}</label>
+			</div>
+		</div>
 		<ul class="menu">
 			<li ng-repeat="(brand,data) in brands"><a href="#/report/{{brand}}">{{data.name}}</a></li>
 			<li><a href="#/report/stacked"><i class="glyphicon glyphicon-screenshot"></i> All Stacked</a></li>
