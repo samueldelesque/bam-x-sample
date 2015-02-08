@@ -25,22 +25,18 @@ angular.module('myApp.report', ['ngRoute','googlechart'])
 			if($routeParams.brand == "stacked"){
 				angular.forEach($scope.brands,function(brand,slug){
 					cols.push({id:slug,label:brand.name,type:"number"})
-					angular.forEach(brand.data,function(dayData,day){
-						var d = new Date()
-						var dayDate = new Date(d.setDate(d.getDate()-day))
-						rows[day] = rows[day] || {c:[{v:(dayDate.getMonth()+1)+"/"+dayDate.getDate()}]}
-						rows[day].c.push({v:dayData.clicks})//add f property here for hover label
+					angular.forEach(brand.data,function(dayData,x){
+						rows[x] = rows[x] || {c:[{v:(dayData.date.getMonth()+1)+"/"+dayData.date.getDate()}]}
+						rows[x].c.push({v:dayData.clicks})//add f property here for hover label
 					})
 					y++
 				})
 			}
 			else{
 				cols.push({id:"combined",label:"All combined",type:"number"})
-				angular.forEach($scope.totals.days,function(dayData,day){
-					var d = new Date()
-					var dayDate = new Date(d.setDate(d.getDate()-day))
-					rows[day] = rows[day] || {c:[{v:(dayDate.getMonth()+1)+"/"+dayDate.getDate()}]}
-					rows[day].c.push({v:dayData.clicks})//add f property here for hover label
+				angular.forEach($scope.totals.days,function(dayData,x){
+					rows[x] = rows[x] || {c:[{v:(dayData.date.getMonth()+1)+"/"+dayData.date.getDate()}]}
+					rows[x].c.push({v:dayData.clicks})//add f property here for hover label
 				})
 			}
 			rows.reverse()
@@ -57,18 +53,11 @@ angular.module('myApp.report', ['ngRoute','googlechart'])
 			
 			cols.push({id:$routeParams.brand,label:brand.name,type:"number"})
 
-			angular.forEach(brand.data,function(dayData,day){
-				var d = new Date()
-				var dayDate = new Date(d.setDate(d.getDate()-day))
-				if($scope.startDate < dayDate && dayDate < $scope.endDate){
-					rows[day] = rows[day] || {c:[{v:(dayDate.getMonth()+1)+"/"+dayDate.getDate()}]}
-					rows[day].c.push({v:dayData.clicks})//add f property here for hover label
-				}
-				else{
-					rows[day] = rows[day] || {c:[{v:dayDate}]}
-				}
+			angular.forEach(brand.data,function(dayData,x){
+				rows[x] = rows[x] || {c:[{v:(dayData.date.getMonth()+1)+"/"+dayData.date.getDate()}]}
+				rows[x].c.push({v:dayData.clicks})//add f property here for hover label
 			})
-			rows.reverse()
+
 		}
 
 		var clicksPerDay = {

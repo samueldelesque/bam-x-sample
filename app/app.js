@@ -20,9 +20,12 @@ config(['$routeProvider', function($routeProvider) {
 	$scope.generateData = function(brands){
 		angular.forEach(brands,function(brand,i){
 			for(var y=0;y<14;y++){
+				var d = new Date()
+				var dayDate = new Date(d.setDate(d.getDate()-y))
 				brands[i].data.push({
 					clicks: getRandomArbitrary(brand.fixtureMinClicks,brand.fixtureMaxClicks),
-					impressions: getRandomArbitrary(brand.fixtureMinImpressions,brand.fixtureMaxImpressions)
+					impressions: getRandomArbitrary(brand.fixtureMinImpressions,brand.fixtureMaxImpressions),
+					date: dayDate
 				})
 			}
 		})
@@ -32,16 +35,15 @@ config(['$routeProvider', function($routeProvider) {
 		var newData = angular.copy(brands);
 		angular.forEach(newData,function(brand,i){
 			var copy_data = []
-			for(var y=0;y<14;y++){
-				var d = new Date()
-				var dayDate = new Date(d.setDate(d.getDate()-y))
-				if(startDate.getTime() < dayDate.getTime() && dayDate.getTime()-100 <= endDate.getTime()){
-					copy_data.push(brand.data[y])
+			angular.forEach(brand.data,function(dataData,x){
+				if(startDate.getTime() < dataData.date.getTime() && dataData.date.getTime()-100 <= endDate.getTime()){
+					copy_data.push(brand.data[x])
 				}
-			}
+			})
 			newData[i].totals = $scope.sumData(brand)
 			newData[i].data = copy_data
 		})
+		console.log(newData)
 		return newData
 	}
 
@@ -59,10 +61,11 @@ config(['$routeProvider', function($routeProvider) {
 			var brandSum = $scope.sumData(brand)
 			sums.clicks += brandSum.clicks
 			sums.impressions += brandSum.impressions
-			angular.forEach(brand.data,function(dayData,day){
-				sums.days[day] = sums.days[day] || {clicks:0,impressions:0}
-				sums.days[day].clicks += dayData.clicks
-				sums.days[day].impressions += dayData.impressions
+			angular.forEach(brand.data,function(dayData,x){
+				sums.days[x] = sums.days[x] || {clicks:0,impressions:0}
+				sums.days[x].clicks += dayData.clicks
+				sums.days[x].impressions += dayData.impressions
+				sums.days[x].date = dayData.date
 			})
 		})
 		return sums
