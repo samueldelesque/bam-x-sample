@@ -41,6 +41,7 @@ config(['$routeProvider', function($routeProvider) {
 				}
 			})
 			newData[i].totals = $scope.sumData(brand)
+			copy_data.reverse()
 			newData[i].data = copy_data
 		})
 		console.log(newData)

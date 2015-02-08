@@ -39,7 +39,6 @@ angular.module('myApp.report', ['ngRoute','googlechart'])
 					rows[x].c.push({v:dayData.clicks})//add f property here for hover label
 				})
 			}
-			rows.reverse()
 		}
 		else{
 			var brand = $scope.brands[$routeParams.brand]
