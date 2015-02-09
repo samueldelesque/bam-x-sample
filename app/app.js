@@ -9,7 +9,7 @@ angular.module('myApp', [
   'googlechart'
 ]).
 config(['$routeProvider', function($routeProvider) {
-  $routeProvider.otherwise({redirectTo: '/report'});
+  $routeProvider.otherwise({redirectTo: '/report/neiman'});
 }])
 .controller('MainCtrl', function($scope) {
 
