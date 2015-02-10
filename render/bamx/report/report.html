@@ -1,0 +1,22 @@
+<h2>Report for <strong>{{brand}}</strong></h2>
+<h3>{{startDate | date : "MMMM d"}} through {{endDate | date : "MMMM d"}} ({{daydiff(startDate,endDate)}} days)</h3>
+<div class="brand-visibility">
+	<div class="cpi">{{cpi}}%</div>
+	<ul class="list-group">
+	  <li class="list-group-item">
+	    <span class="badge">{{impressions}}</span>
+	    Impressions
+	  </li>
+	  <li class="list-group-item">
+	    <span class="badge">{{clicks}}</span>
+	    Clicks
+	  </li>
+	</ul>
+</div>
+
+<div class="markup-details">
+  <div class="cpc"><label>Cost per click</label><div class="value">{{cpc | currency}}</div></div>
+  <div class="markup"><label>Your markup</label><div class="value">{{markup | percentage}}</div></div>
+</div>
+
+<div google-chart chart="chart" style="{{chart.cssStyle}}"/>
